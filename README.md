@@ -1,10 +1,11 @@
 # Development stage
+
 WORK IN PROGRESS
 This addon has not been completed, do not use.
 
 # sort-o-matic
-Sort-O-Matic - Home Assistant Add-on for sorting and finding items in physical containers
 
+Sort-O-Matic - Home Assistant Add-on for sorting and finding items in physical containers
 
 # Home Assistant Add-on: Sort-O-Matic
 
@@ -18,10 +19,22 @@ In addition to its powerful indexing and search capabilities, Sort-O-Matic also 
 
 Overall, Sort-O-Matic is an invaluable tool for anyone who wants to keep track of their belongings and ensure that everything is organized and easy to find. Whether you're a busy professional, a homemaker, or simply someone who wants to stay on top of their household inventory, this addon is a must-have for any HomeAssistant user.
 
-
 ## Authors
 
 The original setup of this repository is by [Mikki Weesenaar][mweesenaar] and [Tim Wijers][tim28].
+
+## Local testing
+
+docker build \
+ --build-arg BUILD_FROM="homeassistant/aarch64-base:latest" \
+ -t local/my-test-addon \
+ .
+
+docker run \
+ --rm \
+ -v /tmp/my_test_data:/data \
+ -p 8099:8099 \
+ local/my-test-addon
 
 ## License
 

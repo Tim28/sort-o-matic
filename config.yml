@@ -1,0 +1,19 @@
+name: "Sort-o-matic"
+description: "tbd"
+version: "0.0.1"
+slug: "sort-o-matic"
+panel_icon: mdi:server
+
+init: false
+startup: application
+
+ingress: true
+
+
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+
