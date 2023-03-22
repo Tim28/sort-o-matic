@@ -28,13 +28,11 @@ The original setup of this repository is by [Mikki Weesenaar][mweesenaar] and [T
 ```bash
 docker build \
  --build-arg BUILD_FROM="homeassistant/aarch64-base:latest" \
- -t local/my-test-addon \
- .
+ -t local/my-test-addon .
 ```
 
 ```bash
-docker run \
- --rm \
+docker run --rm \
  -v /tmp/my_test_data:/data \
  -p 8099:8099 \
  local/my-test-addon

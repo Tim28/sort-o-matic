@@ -1,6 +1,9 @@
 #!/usr/bin/with-contenv bashio
 
-echo "Starting flask app!"
+echo "Running migrations."
+python3 -m flask db upgrade
 
-python3 -m flask --app main run --host=0.0.0.0 -p 8099 --debug
+
+echo "Starting flask app!"
+python3 -m flask run --host=0.0.0.0 -p 8099 --debug
 
