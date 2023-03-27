@@ -1,5 +1,5 @@
 name: "Sort-o-matic"
-description: "tbd"
+description: "Sort and find items in physical containers"
 version: "0.0.1"
 slug: "sort-o-matic"
 panel_icon: mdi:server
