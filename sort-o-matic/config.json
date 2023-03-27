@@ -1,0 +1,8 @@
+{
+  "name": "Sort-O-Matic",
+  "version": "0.0.1",
+  "slug": "sort-o-matic",
+  "description": "Sort and find items in physical containers",
+  "url": "https://github.com/Tim28/sort-o-matic",
+  "startup": "application",
+}
