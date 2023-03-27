@@ -6,9 +6,11 @@ from flask_migrate import Migrate, upgrade
 
 from models import SortOMatic, db, Container
 
+DB_PATH = os.getenv('DATABASE_PATH', '/data/sort-o-matic.sqlite')
+
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project2.sqlite"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Might be interesting to use less memory
 
 db.init_app(app)

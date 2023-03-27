@@ -33,6 +33,7 @@ docker build \
 
 ```bash
 docker run --rm \
+ -e DATABASE_PATH="sort-o-matic.sqlite3" \
  -v /tmp/my_test_data:/data \
  -p 8099:8099 \
  local/my-test-addon
