@@ -1,0 +1,22 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block content %}
+    <div class="container">
+        {% include 'menu.html' %}
+
+        <h2>Items</h2>
+        <table class="table table-bordered">
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>
+                        <ul>
+                            {% for container in item.containers %}<li>{{ container }}</li>{% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

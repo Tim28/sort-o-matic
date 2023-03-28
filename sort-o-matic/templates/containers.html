@@ -2,7 +2,9 @@
 
 {% block content %}
     <div class="container">
-        <h1>Sort-O-Matic Inventory</h1>
+        {% include 'menu.html' %}
+
+        <h2>Containers</h2>
         <form method="post">
             <div class="form-group">
                 <label for="container_name">Container ID:</label>
@@ -10,10 +12,10 @@
                 <button type="submit" class="btn btn-primary" name="action" value="add_container">Add Container</button>
             </div>
         </form>
-        {% for container, items in inventory.items() %}
+        {% for container in inventory %}
             <h2>{{ container.description }}</h2>
             <ul>
-                {% for item in items %}
+                {% for item in container.items %}
                     <li>{{ item.description }}
                         <form method="post" style="display:inline">
                             <input type="hidden" name="container_id" value="{{ container.id }}">

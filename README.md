@@ -23,6 +23,11 @@ Overall, Sort-O-Matic is an invaluable tool for anyone who wants to keep track o
 
 The original setup of this repository is by [Mikki Weesenaar][mweesenaar] and [Tim Wijers][tim28].
 
+## Database migrations
+To create a new migration file, first add or update the models.  
+Then run `flask db migrate -m 'My migration description'`  
+Finally run `flask db upgrade`
+
 ## Local testing
 
 ```bash
