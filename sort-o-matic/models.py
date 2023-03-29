@@ -32,6 +32,7 @@ container_item_m2m = db.Table(
 )
 
 
+#  MW: Dit is gewoon example meuk. Kan tzt gewoon weg
 # class OneClass(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     name = db.Column(db.String, nullable=True)

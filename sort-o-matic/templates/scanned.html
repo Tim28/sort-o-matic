@@ -1,0 +1,12 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block content %}
+<div class="container">
+    {% include 'menu.html' %}
+
+    <h2>Containers</h2>
+    {{ containers }}
+
+    <h2>Items</h2>
+    {{ items }}
+{% endblock %}

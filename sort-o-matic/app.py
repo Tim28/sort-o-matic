@@ -10,6 +10,8 @@ from models import SortOMatic, db
 DB_PATH = os.getenv('DATABASE_PATH', '/data/sort-o-matic.sqlite')
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
+
 bootstrap = Bootstrap5(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Might be interesting to use less memory
@@ -46,9 +48,23 @@ def index():
 def items():
     return render_template('items.html', items=sortomatic.get_items())
 
+
 @app.route('/container/<container_id>')
 def container(container_id):
     return render_template('container.html', container=sortomatic.get_container(container_id))
+
+
+@app.route('/scan')
+def scan():
+    return render_template('scan.html')
+
+
+@app.route('/scan/<code>')
+def scanned_item(code):
+    found_containers = models.Container.query.filter_by(id=code).all()
+    found_items = models.Item.query.filter_by(id=code).all()
+    return render_template('scanned.html', containers=found_containers, items=found_items)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
