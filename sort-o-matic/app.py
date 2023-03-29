@@ -39,13 +39,12 @@ def index():
             sortomatic.remove_item(container_name, item_id)
         return redirect('/')
 
-    return render_template('index.html', inventory=sortomatic.get_containers())
+    return render_template('containers.html', inventory=sortomatic.get_containers())
 
 
 @app.route('/items', methods=['GET'])
 def items():
-
-    return render_template('m2m.html', items=sortomatic.get_items())
+    return render_template('items.html', items=sortomatic.get_items())
 
 
 if __name__ == '__main__':
