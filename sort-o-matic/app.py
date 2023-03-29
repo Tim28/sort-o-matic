@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template, request, redirect
-from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap5
 from flask_migrate import Migrate
 
 import models
@@ -10,7 +10,7 @@ from models import SortOMatic, db
 DB_PATH = os.getenv('DATABASE_PATH', '/data/sort-o-matic.sqlite')
 
 app = Flask(__name__)
-bootstrap = Bootstrap(app)
+bootstrap = Bootstrap5(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Might be interesting to use less memory
 
@@ -46,6 +46,9 @@ def index():
 def items():
     return render_template('items.html', items=sortomatic.get_items())
 
+@app.route('/container/<container_id>')
+def container(container_id):
+    return render_template('container.html', container=sortomatic.get_container(container_id))
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

@@ -1,5 +1,5 @@
 flask==2.2.3
-flask-bootstrap==3.3.7.1
+bootstrap-flask==2.2.0
 flask-sqlalchemy==3.0.3
 flask-migrate==4.0.4
 

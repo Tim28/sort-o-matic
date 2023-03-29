@@ -76,11 +76,16 @@ class SortOMatic:
     def get_containers(self):
         Container.query: Query
 
-        return {
+        return [
             container
             for container
             in Container.query.all()
-        }
+        ]
+
+    #TODO Sanitize user input for only nummeric values
+    def get_container(self, container_id):
+        container = Container.query.filter_by(id=container_id).first();
+        return container
 
     def get_items(self):
         Item.query: Query
