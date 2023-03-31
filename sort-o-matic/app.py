@@ -14,7 +14,7 @@ app.url_map.strict_slashes = False
 
 bootstrap = Bootstrap5(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Might be interesting to use less memory
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -32,8 +32,8 @@ def index():
         elif request.form['action'] == 'add_item':
             container_id = request.form['container_id']
             item_description = request.form['item_description']
-            container = models.Container.query.filter_by(id=container_id).first_or_404()
-            sortomatic.add_item(container, item_description)
+            container_obj = models.Container.query.filter_by(id=container_id).first_or_404()
+            sortomatic.add_item(container_obj, item_description)
 
         elif request.form['action'] == 'remove_item':
             container_name = request.form['container_id']
@@ -49,7 +49,7 @@ def items():
     return render_template('items.html', items=sortomatic.get_items())
 
 
-@app.route('/container/<container_id>')
+@app.route('/container/<int:container_id>')
 def container(container_id):
     return render_template('container.html', container=sortomatic.get_container(container_id))
 

@@ -9,7 +9,7 @@
             <form method="post">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="container_name" required placeholder="Let's create a new container, enter the name :)" aria-describedby="button-addon2">
-                    <button type="submit" class="btn btn-primary" name="action" type="submit" value="add_container" id="button-addon1">Button</button>
+                    <button type="submit" class="btn btn-primary" name="action" value="add_container" id="button-addon1">Add</button>
                 </div>
             </form>
         </div>
@@ -26,37 +26,36 @@
                         <div class="card-body">
                             <h5 class="card-title">Special title treatment</h5>
                             <p class="card-text">
-
-{#                                TODO make dynamic content#}
+                                {# TODO make dynamic content#}
                             <ul>
-                            <li>Last updated: 12/02/2023</li>
-                            <li>Total items: {{ container.items |length }}</li>
+                                <li>Last updated: 12/02/2023</li>
+                                <li>Total items: {{ container.items |length }}</li>
                             </ul>
-{#                                {% for item in container.items %}#}
-{#                                    <li>{{ item.description }}#}
-{#                                        <form method="post" style="display:inline">#}
-{#                                            <input type="hidden" name="container_id" value="{{ container.id }}">#}
-{#                                            <input type="hidden" name="item_id" value="{{ item.id }}">#}
-{#                                            <button type="submit" class="btn btn-danger" name="action"#}
-{#                                                    value="remove_item">Remove#}
-{#                                            </button>#}
-{#                                        </form>#}
-{#                                    </li>#}
-{#                                {% endfor %}#}
-{#                                <form method="post">#}
-{#                                    <div class="form-group">#}
-{#                                        <label for="item_description">Item Description:</label>#}
-{#                                        <input type="text" class="form-control" name="item_description" required/>#}
-{#                                        <input type="hidden" name="container_id" required value="{{ container.id }}"/>#}
-{#                                        <button type="submit" class="btn btn-primary" name="action" value="add_item">Add#}
-{#                                            item#}
-{#                                        </button>#}
-{#                                    </div>#}
-{#                                </form>#}
-                            </ul>
+                            {#     {% for item in container.items %}#}
+                            {#         <li>{{ item.description }}#}
+                            {#             <form method="post" style="display:inline">#}
+                            {#                 <input type="hidden" name="container_id" value="{{ container.id }}">#}
+                            {#                 <input type="hidden" name="item_id" value="{{ item.id }}">#}
+                            {#                 <button type="submit" class="btn btn-danger" name="action"#}
+                            {#                         value="remove_item">Remove#}
+                            {#                 </button>#}
+                            {#             </form>#}
+                            {#         </li>#}
+                            {#     {% endfor %}#}
+                            {#     <form method="post">#}
+                            {#         <div class="form-group">#}
+                            {#             <label for="item_description">Item Description:</label>#}
+                            {#             <input type="text" class="form-control" name="item_description" required/>#}
+                            {#             <input type="hidden" name="container_id" required value="{{ container.id }}"/>#}
+                            {#             <button type="submit" class="btn btn-primary" name="action" value="add_item">Add#}
+                            {#                 item#}
+                            {#             </button>#}
+                            {#         </div>#}
+                            {#     </form>#}
+                            {# </ul>#}
                             </p>
-{#                            <a href="#" class="btn btn-primary btn-success">Add Item</a>#}
-{#                            <a href="#" class="btn btn-primary btn-danger">Remove</a>#}
+                            {#                            <a href="#" class="btn btn-primary btn-success">Add Item</a>#}
+                            {#                            <a href="#" class="btn btn-primary btn-danger">Remove</a>#}
                         </div>
                     </div>
                 </div>
@@ -65,7 +64,6 @@
 
         </div>
     </div>
-
 {% endblock %}
 
 

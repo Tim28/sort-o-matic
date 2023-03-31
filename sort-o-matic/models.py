@@ -1,57 +1,50 @@
+from typing import List, Optional
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy.query import Query
-import sqlalchemy as sa
+from sqlalchemy.ext.associationproxy import association_proxy
 
 db: SQLAlchemy = SQLAlchemy()
+
+
+class ContainerItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    container_id = db.Column('container_id', db.Integer, db.ForeignKey('container.id'))
+    item_id = db.Column('item_id', db.Integer, db.ForeignKey('item.id'))
+
+    quantity = db.Column(db.Integer)
+
+    # container = db.relationship('Container', back_populates='items_assoc')
+    container = db.relationship('Container', back_populates='items')
+    item = db.relationship('Item', back_populates='containers')
 
 
 class Container(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String, nullable=True)
+    identifier = db.Column(db.String, nullable=True)
 
-    items = db.relationship('Item', secondary='container_item', back_populates='containers')
+    items = db.relationship('ContainerItem', back_populates='container')
 
     def __repr__(self):
+        return f"Container ({self.id}): {self.description}"
+
+    def __str__(self):
         return f"Container ({self.id}): {self.description}"
 
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String, nullable=True)
+    identifier = db.Column(db.String, nullable=True)
 
-    containers = db.relationship('Container', secondary='container_item', back_populates='items')
+    containers = db.relationship('ContainerItem', back_populates='item')
 
     def __repr__(self):
         return f"Item ({self.id}): {self.description}"
 
-
-container_item_m2m = db.Table(
-    "container_item",
-    db.Column("container_id", sa.ForeignKey(Container.id), primary_key=True),
-    db.Column("item_id", sa.ForeignKey(Item.id), primary_key=True)
-)
-
-
-#  MW: Dit is gewoon example meuk. Kan tzt gewoon weg
-# class OneClass(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String, nullable=True)
-#
-#     twos = db.relationship('TwoClass', secondary='one_two', back_populates='ones')
-#
-#
-# class TwoClass(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String, nullable=True)
-#
-#     ones = db.relationship('OneClass', secondary='one_two', back_populates='twos')
-#
-#
-# one_two_m2m = db.Table(
-#     "one_two",
-#     db.Column("one_id", sa.ForeignKey(OneClass.id), primary_key=True),
-#     db.Column("two_id", sa.ForeignKey(TwoClass.id), primary_key=True)
-# )
+    def __str__(self):
+        return f"Item ({self.id}): {self.description}"
 
 
 class SortOMatic:
@@ -83,10 +76,9 @@ class SortOMatic:
             in Container.query.all()
         ]
 
-    #TODO Sanitize user input for only nummeric values
-    def get_container(self, container_id):
-        container = Container.query.filter_by(id=container_id).first();
-        return container
+    @staticmethod
+    def get_container(container_id: int):
+        return Container.query.filter_by(id=container_id).first()
 
     def get_items(self):
         Item.query: Query

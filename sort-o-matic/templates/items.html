@@ -25,9 +25,9 @@
                 <th scope="row">{{ item.id }}</th>
                 <td>{{ item.description }}</td>
 {#            TODO make this a thing#}
-                <td>2</td>
+                <td></td>
                 <td><ul>
-                    {% for container in item.containers %}<li>{{ container }}</li>{% endfor %}
+                    {% for container in item.containers %}<li>{{ container }} ({{ container.quantity }})</li>{% endfor %}
                 </ul></td>
                 <td>
                     <form method="post" style="display:inline">
