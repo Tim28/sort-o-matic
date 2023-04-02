@@ -1,29 +1,30 @@
 {% extends '_base.html' %}
+
 {% block content %}
-    {% if container != none %}
+    {% if item != none %}
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <h2>Contents for container {{ container.description }}</h2>
+            <h2>Info about item: {{ item.description }}</h2>
         </div>
 
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Item</th>
-                    <th scope="col">Qty</th>
-                    <th scope="col">Added</th>
+                    <th scope="col">ContainerID</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Quantity</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                {% for item in container.items %}
+                {% for container in item.containers %}
                     <tr>
-                        <th scope="row"><a href="{{ item.item.get_url() }}">{{ item.id }}</a></th>
-                        <td><a href="{{ item.item.get_url() }}">{{ item.item.description }}</a></td>
-                        <td>{{ item.quantity }}{{ item.item.quantity }}</td>
-                        <td>{{ container.description }}</td>
+                        <th scope="row"><a href="{{ container.container.get_url() }}">{{ container.container.id }}</a></th>
+                        <td><a href="{{ container.container.get_url() }}">{{ container.container.description }}</a></td>
+                        <td>{{ container.quantity }}</td>
+                        {#                            <td>{{ item.quantity }}{{ item.item.quantity }}</td>#}
+                        {#                            <td>{{ container.description }}</td>#}
                         <td>
                             {#TODO make this actually work#}
                             <form method="post" style="display:inline">
@@ -34,17 +35,15 @@
                             </form>
                         </td>
                     </tr>
-
                 {% endfor %}
                 </tbody>
             </table>
         </div>
-
     {% else %}
         <div class="row g4">
             <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading">Whoops!</h4>
-                <p>This container does not excist, please return to the main page and try again :)</p>
+                <p>This item does not exist, please return to the main page and try again :)</p>
             </div>
         </div>
     {% endif %}

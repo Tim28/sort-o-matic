@@ -1,14 +1,19 @@
-{{ bootstrap.load_css() }}
-
+{% extends '_base.html' %}
 
 {% block content %}
-    <div class="container">
-        {% include 'menu.html' %}
+    <div class="row ">
+        <form method="post">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="item_name" required placeholder="Let's create a new item, enter the name :)" aria-describedby="button-addon2"/>
+                <button type="submit" class="btn btn-primary" name="action" value="add_item" id="button-addon1">Add</button>
+            </div>
+        </form>
+    </div>
 
-        <h2>Items</h2>
+    <h2>Items</h2>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <table class="table table-hover">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <table class="table table-hover">
             <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -21,31 +26,32 @@
             <tbody>
 
             {% for item in items %}
-            <tr>
-                <th scope="row">{{ item.id }}</th>
-                <td>{{ item.description }}</td>
-{#            TODO make this a thing#}
-                <td></td>
-                <td><ul>
-                    {% for container in item.containers %}<li>{{ container }} ({{ container.quantity }})</li>{% endfor %}
-                </ul></td>
-                <td>
-                    <form method="post" style="display:inline">
-                        <input type="hidden" name="container_id" value="">
-                        <input type="hidden" name="item_id" value="">
-{#                    TODO make this button actually work#}
-                        <button type="submit" class="btn btn-danger" name="action" value="remove_item">X
-                        </button>
+                <tr>
+                    <th scope="row"><a href="{{ item.get_url() }}">{{ item.id }}</a></th>
+                    <td><a href="{{ item.get_url() }}">{{ item.description }}</a></td>
+                    <td>{{ item.containers | sum(attribute='quantity') }}</td>
+                    <td>
+                        <ul>
+                            {% for container in item.containers %}
+                                <li><a href="{{ container.container.get_url() }}">{{ container.container.description }}</a> ({{ container.quantity }}x)</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <form method="post" style="display:inline">
+                            <input type="hidden" name="container_id" value="">
+                            <input type="hidden" name="item_id" value="">
+                            {#                    TODO make this button actually work#}
+                            <button type="submit" class="btn btn-danger" name="action" value="remove_item">X
+                            </button>
 
-                    </form>
-                </td>
-            </tr>
+                        </form>
+                    </td>
+                </tr>
 
             {% endfor %}
 
             </tbody>
-            </table>
-        </div>
-
+        </table>
     </div>
 {% endblock %}

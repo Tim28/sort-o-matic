@@ -1,8 +1,6 @@
-from typing import List, Optional
+from typing import List
 
 from flask_sqlalchemy import SQLAlchemy
-from flask_sqlalchemy.query import Query
-from sqlalchemy.ext.associationproxy import association_proxy
 
 db: SQLAlchemy = SQLAlchemy()
 
@@ -14,8 +12,8 @@ class ContainerItem(db.Model):
 
     quantity = db.Column(db.Integer)
 
-    # container = db.relationship('Container', back_populates='items_assoc')
     container = db.relationship('Container', back_populates='items')
+    # container: Mapped['Container'] = db.relationship('Container', back_populates='items')
     item = db.relationship('Item', back_populates='containers')
 
 
@@ -32,6 +30,9 @@ class Container(db.Model):
     def __str__(self):
         return f"Container ({self.id}): {self.description}"
 
+    def get_url(self):
+        return f"/container/{self.id}"
+
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,16 +47,13 @@ class Item(db.Model):
     def __str__(self):
         return f"Item ({self.id}): {self.description}"
 
+    def get_url(self):
+        return f"/item/{self.id}"
+
 
 class SortOMatic:
     def add_container(self, container_name):
         db.session.add(Container(description=container_name))
-        db.session.commit()
-
-    def add_item(self, container: Container, item_description: str):
-        item = Item(description=item_description)
-        item.containers.append(container)
-        db.session.add(item)
         db.session.commit()
 
     def remove_item(self, container_name, item_id):
@@ -63,28 +61,23 @@ class SortOMatic:
         db.session.delete(item)
         db.session.commit()
 
-    def search(self, keyword):
-        results = {}
-        return results
-
-    def get_containers(self):
-        Container.query: Query
-
-        return [
-            container
-            for container
-            in Container.query.all()
-        ]
+    @staticmethod
+    def get_containers() -> List[Container]:
+        return Container.query.all()
 
     @staticmethod
-    def get_container(container_id: int):
+    def get_container(container_id: int) -> Container:
         return Container.query.filter_by(id=container_id).first()
 
-    def get_items(self):
-        Item.query: Query
+    @staticmethod
+    def get_items() -> List[Item]:
+        return Item.query.all()
 
-        return [
-            item
-            for item
-            in Item.query.all()
-        ]
+    @staticmethod
+    def get_item(item_id: int) -> Item:
+        return Item.query.filter_by(id=item_id).first()
+
+    @staticmethod
+    def add_item(description):
+        db.session.add(Item(description=description))
+        db.session.commit()

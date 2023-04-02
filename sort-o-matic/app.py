@@ -29,11 +29,11 @@ def index():
             container_name = request.form['container_name']
             sortomatic.add_container(container_name)
 
-        elif request.form['action'] == 'add_item':
-            container_id = request.form['container_id']
-            item_description = request.form['item_description']
-            container_obj = models.Container.query.filter_by(id=container_id).first_or_404()
-            sortomatic.add_item(container_obj, item_description)
+        # elif request.form['action'] == 'add_item':
+        #     container_id = request.form['container_id']
+        #     item_description = request.form['item_description']
+        #     container_obj = models.Container.query.filter_by(id=container_id).first_or_404()
+        #     sortomatic.add_item(container_obj, item_description)
 
         elif request.form['action'] == 'remove_item':
             container_name = request.form['container_id']
@@ -41,17 +41,27 @@ def index():
             sortomatic.remove_item(container_name, item_id)
         return redirect('/')
 
-    return render_template('containers.html', inventory=sortomatic.get_containers())
+    return render_template('containers.html', containers=sortomatic.get_containers())
 
 
-@app.route('/items', methods=['GET'])
+@app.route('/items', methods=['GET', 'POST'])
 def items():
+    if request.method == 'POST':
+        action = request.form['action']
+        if action == "add_item":
+            sortomatic.add_item(request.form['item_name'])
+
     return render_template('items.html', items=sortomatic.get_items())
 
 
 @app.route('/container/<int:container_id>')
 def container(container_id):
     return render_template('container.html', container=sortomatic.get_container(container_id))
+
+
+@app.route('/item/<int:item_id>')
+def item(item_id):
+    return render_template('item.html', item=sortomatic.get_item(item_id))
 
 
 @app.route('/scan')
@@ -64,6 +74,18 @@ def scanned_item(code):
     found_containers = models.Container.query.filter_by(id=code).all()
     found_items = models.Item.query.filter_by(id=code).all()
     return render_template('scanned.html', containers=found_containers, items=found_items)
+
+
+@app.route('/search')
+def search():
+    value = request.args.get('value')
+    if not value:
+        return redirect('/')
+
+    found_containers = models.Container.query.filter(models.Container.description.contains(value)).all()
+    found_items = models.Item.query.filter(models.Item.description.contains(value)).all()
+
+    return render_template('search.html', results=found_containers + found_items)
 
 
 if __name__ == '__main__':
