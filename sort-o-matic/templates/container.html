@@ -1,7 +1,24 @@
 {% extends '_base.html' %}
+
 {% block content %}
     {% if container != none %}
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row ">
+
+            <form method="post">
+
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control autocomplete" id="autocompleteInput" name="item_description"
+                           placeholder="Let's add an item, enter the name :)" autocomplete="off" spellcheck="false"
+                           aria-autocomplete="list" aria-expanded="false" aria-haspopup="menu" role="combobox"
+                           aria-controls="ac-menu-1">
+                    <button type="submit" class="btn btn-primary" name="action" value="add_item" id="button-addon1">
+                        Add
+                    </button>
+                </div>
+
+            </form>
+        </div>
+        <div class="row  g-4">
             <h2>Contents for container {{ container.description }}</h2>
         </div>
 
@@ -44,8 +61,38 @@
         <div class="row g4">
             <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading">Whoops!</h4>
-                <p>This container does not excist, please return to the main page and try again :)</p>
+                <p>This container does not exist, please return to the main page and try again :)</p>
             </div>
         </div>
     {% endif %}
+
+    <script type="module">
+        {# TODO see reference of module used: https://github.com/lekoala/bootstrap5-autocomplete #}
+        import Autocomplete from "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js";
+
+        const opts = {
+            onSelectItem: console.log,
+        };
+        var src = [];
+        for (let i = 0; i < 8; i++) {
+            src.push({
+                title: "Option " + i,
+                id: "opt" + i,
+                data: {
+                    key: i,
+                },
+            });
+        }
+        Autocomplete.init("input.autocomplete", {
+            items: src,
+            fullWidth: true,
+            fixed: true,
+            notFoundMessage: "This item does not exist, click Add! ",
+            valueField: "id",
+            labelField: "title",
+            highlightTyped: true,
+            onSelectItem: console.log,
+        });
+    </script>
+
 {% endblock %}
