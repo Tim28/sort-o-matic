@@ -73,26 +73,22 @@
         const opts = {
             onSelectItem: console.log,
         };
-        var src = [];
-        for (let i = 0; i < 8; i++) {
-            src.push({
-                title: "Option " + i,
-                id: "opt" + i,
-                data: {
-                    key: i,
-                },
-            });
-        }
-        Autocomplete.init("input.autocomplete", {
-            items: src,
-            fullWidth: true,
-            fixed: true,
-            notFoundMessage: "This item does not exist, click Add! ",
-            valueField: "id",
-            labelField: "title",
-            highlightTyped: true,
-            onSelectItem: console.log,
-        });
+        $.ajax('/api/lookahead')
+            .done((resp) => {
+                Autocomplete.init("input.autocomplete", {
+                    items: resp,
+                    fullWidth: true,
+                    fixed: true,
+                    notFoundMessage: "This item does not exist, click Add! ",
+                    valueField: "id",
+                    labelField: "title",
+                    highlightTyped: true,
+                    onSelectItem: console.log,
+                });
+            })
+            .error(function() {
+
+            })
     </script>
 
 {% endblock %}

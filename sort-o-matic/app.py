@@ -1,4 +1,5 @@
 import os
+from typing import List
 
 from flask import Flask, render_template, request, redirect
 from flask_bootstrap import Bootstrap5
@@ -86,6 +87,18 @@ def search():
     found_items = models.Item.query.filter(models.Item.description.contains(value)).all()
 
     return render_template('search.html', results=found_containers + found_items)
+
+
+@app.route('/api/lookahead')
+def lookahead():
+    items_: List[models.Item] = models.Item.query.all()
+    return [{
+        "title": item_.description,
+        "id": f"opt {item_.id}",
+        "data": {
+            "key": item_.id
+        }
+    } for item_ in items_]
 
 
 if __name__ == '__main__':
