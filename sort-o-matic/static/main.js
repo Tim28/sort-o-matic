@@ -11,9 +11,11 @@ $('input#search_input').on('keypress', function (event) {
 })
 
 $('body').on('keypress', function (event) {
-    if (event.key === "s") {
+    const searchInput = $('input#search_input');
+
+    if (event.key === "s" && !searchInput.is(':focus')) {
         event.preventDefault()
-        $('input#search_input').focus();
+        searchInput.focus();
     }
 })
 
