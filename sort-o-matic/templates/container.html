@@ -5,15 +5,13 @@
         <div class="row ">
 
             <form method="post">
-
                 <div class="input-group mb-3">
                     <input type="text" class="form-control autocomplete" id="autocompleteInput" name="item_description"
                            placeholder="Let's add an item, enter the name :)" autocomplete="off" spellcheck="false"
                            aria-autocomplete="list" aria-expanded="false" aria-haspopup="menu" role="combobox"
-                           aria-controls="ac-menu-1">
-                    <button type="submit" class="btn btn-primary" name="action" value="add_item" id="button-addon1">
-                        Add
-                    </button>
+                           aria-controls="ac-menu-1"/>
+                    <input type="hidden" name="item_id" id="add_item_id" />
+                    <button type="submit" class="btn btn-primary" name="action" value="add_item" id="button-addon1">Add</button>
                 </div>
 
             </form>
@@ -70,24 +68,25 @@
         {# TODO see reference of module used: https://github.com/lekoala/bootstrap5-autocomplete #}
         import Autocomplete from "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js";
 
-        const opts = {
-            onSelectItem: console.log,
-        };
+        function onSelectItemFn(elem) {
+            console.log(elem)
+            $('#add_item_id').attr('value', elem.id)
+        }
         $.ajax('/api/lookahead')
             .done((resp) => {
                 Autocomplete.init("input.autocomplete", {
                     items: resp,
                     fullWidth: true,
                     fixed: true,
-                    notFoundMessage: "This item does not exist, click Add! ",
+                    notFoundMessage: "This item does not exist, click Add!",
                     valueField: "id",
                     labelField: "title",
                     highlightTyped: true,
-                    onSelectItem: console.log,
+                    onSelectItem: onSelectItemFn,
                 });
             })
-            .error(function() {
-
+            .fail(() => {
+                alert("Failed /api/lookahead request.")
             })
     </script>
 

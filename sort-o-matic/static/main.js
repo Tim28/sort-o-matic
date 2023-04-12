@@ -10,14 +10,14 @@ $('input#search_input').on('keypress', function (event) {
     }
 })
 
-$('body').on('keypress', function (event) {
-    const searchInput = $('input#search_input');
-
-    if (event.key === "s" && !searchInput.is(':focus')) {
-        event.preventDefault()
-        searchInput.focus();
-    }
-})
+// $('body').on('keypress', function (event) {
+//     const searchInput = $('input#search_input');
+//
+//     if (event.key === "s" && !searchInput.is(':focus')) {
+//         event.preventDefault()
+//         searchInput.focus();
+//     }
+// })
 
 function search(value) {
     console.log(value);

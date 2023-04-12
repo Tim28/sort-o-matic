@@ -1,12 +1,13 @@
 from typing import List
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 db: SQLAlchemy = SQLAlchemy()
 
 
 class ContainerItem(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     container_id = db.Column('container_id', db.Integer, db.ForeignKey('container.id'))
     item_id = db.Column('item_id', db.Integer, db.ForeignKey('item.id'))
 
@@ -16,6 +17,13 @@ class ContainerItem(db.Model):
     # container: Mapped['Container'] = db.relationship('Container', back_populates='items')
     item = db.relationship('Item', back_populates='containers')
 
+    def __init__(self, *args, **kwargs):
+        id_ = db.session.query(func.max(ContainerItem.id)).first()[0] + 1
+        super().__init__(id=id_, *args, **kwargs)
+    #     self.container_id = container_id
+    #     self.item_id = item_id
+    #     self.quantity = quantity
+    #     self.id = db.session.query(func.max(ContainerItem.id)).get() + 1
 
 class Container(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,6 +40,11 @@ class Container(db.Model):
 
     def get_url(self):
         return f"/container/{self.id}"
+
+    def add_item(self, item: 'Item'):
+        ci = ContainerItem(container_id=self.id, item_id=item.id, quantity=1)
+        db.session.add(ci)
+        db.session.commit()
 
 
 class Item(db.Model):
@@ -67,7 +80,7 @@ class SortOMatic:
 
     @staticmethod
     def get_container(container_id: int) -> Container:
-        return Container.query.filter_by(id=container_id).first()
+        return Container.query.get(container_id)
 
     @staticmethod
     def get_items() -> List[Item]:
@@ -75,9 +88,11 @@ class SortOMatic:
 
     @staticmethod
     def get_item(item_id: int) -> Item:
-        return Item.query.filter_by(id=item_id).first()
+        return Item.query.get(item_id)
 
     @staticmethod
-    def add_item(description):
-        db.session.add(Item(description=description))
+    def add_item(description) -> Item:
+        item = Item(description=description)
+        db.session.add(item)
         db.session.commit()
+        return item
