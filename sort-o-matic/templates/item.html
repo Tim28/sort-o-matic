@@ -1,6 +1,7 @@
 {% extends '_base.html' %}
 
 {% block content %}
+
     {% if item != none %}
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <h2>Info about item: {{ item.description }}</h2>
@@ -23,8 +24,8 @@
                         <th scope="row"><a href="{{ container.container.get_url() }}">{{ container.container.id }}</a></th>
                         <td><a href="{{ container.container.get_url() }}">{{ container.container.description }}</a></td>
                         <td>{{ container.quantity }}</td>
-                        {#                            <td>{{ item.quantity }}{{ item.item.quantity }}</td>#}
-                        {#                            <td>{{ container.description }}</td>#}
+                        {# <td>{{ item.quantity }}{{ item.item.quantity }}</td>#}
+                        {# <td>{{ container.description }}</td>#}
                         <td>
                             {#TODO make this actually work#}
                             <form method="post" style="display:inline">

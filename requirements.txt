@@ -2,5 +2,8 @@ flask==2.2.3
 bootstrap-flask==2.2.0
 flask-sqlalchemy==3.0.3
 flask-migrate==4.0.4
+sqlalchemy-utils==0.41.0
 
 python-dotenv==1.0.0
+SQLAlchemy==2.0.10
+alembic==1.10.3

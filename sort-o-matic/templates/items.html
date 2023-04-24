@@ -1,7 +1,8 @@
 {% extends '_base.html' %}
 
 {% block content %}
-    <div class="row ">
+    <h2>Items</h2>
+    <div class="row">
         <form method="post">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" name="item_name" required placeholder="Let's create a new item, enter the name :)" aria-describedby="button-addon2"/>
@@ -9,8 +10,6 @@
             </div>
         </form>
     </div>
-
-    <h2>Items</h2>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <table class="table table-hover">
@@ -38,14 +37,12 @@
                         </ul>
                     </td>
                     <td>
-                        <form method="post" style="display:inline">
-                            <input type="hidden" name="container_id" value="">
-                            <input type="hidden" name="item_id" value="">
-                            {#                    TODO make this button actually work#}
-                            <button type="submit" class="btn btn-danger" name="action" value="remove_item">X
-                            </button>
-
-                        </form>
+                        <button type="button" class="btn btn-danger"
+                                {% if item.containers | sum(attribute='quantity') > 0 %} disabled{% endif %}
+                                data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                data-bs-item-id="{{ item.id }}"
+                                data-bs-item-description="{{ item.description }}">X
+                        </button>
                     </td>
                 </tr>
 
@@ -54,4 +51,40 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {#<div class="modal-body"></div>#}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary">Yap!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const exampleModal = document.getElementById('exampleModal');
+
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const itemId = button.getAttribute('data-bs-item-id');
+            const itemDescription = button.getAttribute('data-bs-item-description');
+
+            const modalTitle = exampleModal.querySelector('.modal-title');
+            {#const modalBodyInput = exampleModal.querySelector('.modal-body input');#}
+
+            $('#exampleModal .modal-footer .btn-primary').on('click', () => {
+                window.location.href = `/items/delete/${itemId}`
+            })
+
+            modalTitle.textContent = `Are you sure you want to remove '${itemDescription}'?`
+        })
+    </script>
 {% endblock %}

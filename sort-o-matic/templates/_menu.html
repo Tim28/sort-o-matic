@@ -10,6 +10,9 @@
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/containers">Containers</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/items">Items</a>
                 </li>
             </ul>
@@ -20,4 +23,16 @@
         </div>
     </div>
 </nav>
-<br/>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole! Warnings found!</strong>
+            <ul class="list-group">
+                {% for message in messages %}
+                    <li class="list-group-item list-group-item-warning">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+{% endwith %}

@@ -10,11 +10,11 @@
                            placeholder="Let's add an item, enter the name :)" autocomplete="off" spellcheck="false"
                            aria-autocomplete="list" aria-expanded="false" aria-haspopup="menu" role="combobox"
                            aria-controls="ac-menu-1"/>
-                    <input type="hidden" name="item_id" id="add_item_id" />
+                    <input type="hidden" name="item_id" id="add_item_id"/>
                     <button type="submit" class="btn btn-primary" name="action" value="add_item" id="button-addon1">Add</button>
                 </div>
-
             </form>
+
         </div>
         <div class="row  g-4">
             <h2>Contents for container {{ container.description }}</h2>
@@ -40,17 +40,16 @@
                         <td>{{ item.quantity }}{{ item.item.quantity }}</td>
                         <td>{{ container.description }}</td>
                         <td>
-                            {#TODO make this actually work#}
-                            <form method="post" style="display:inline">
-                                <input type="hidden" name="container_id" value="">
-                                <input type="hidden" name="item_id" value="">
-                                <button type="submit" class="btn btn-danger" name="action" value="remove_item">X
-                                </button>
-                            </form>
+                            <button type="button" class="btn btn-danger"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                    data-bs-container-id="{{ container.id }}"
+                                    data-bs-container-item-id="{{ item.id }}"
+                                    data-bs-item-description="{{ item.item.description }}">X
+                            </button>
                         </td>
                     </tr>
-
                 {% endfor %}
+
                 </tbody>
             </table>
         </div>
@@ -72,7 +71,8 @@
             console.log(elem)
             $('#add_item_id').attr('value', elem.id)
         }
-        $.ajax('/api/lookahead')
+
+        $.ajax('/api/lookahead/items')
             .done((resp) => {
                 Autocomplete.init("input.autocomplete", {
                     items: resp,
@@ -86,8 +86,45 @@
                 });
             })
             .fail(() => {
-                alert("Failed /api/lookahead request.")
+                alert("Failed /api/lookahead/items request.")
             })
     </script>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {#<div class="modal-body"></div>#}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary">Yap!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const exampleModal = document.getElementById('exampleModal');
+
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const containerId = button.getAttribute('data-bs-container-id');
+            const containerItemId = button.getAttribute('data-bs-container-item-id');
+            const itemDescription = button.getAttribute('data-bs-item-description');
+
+            const modalTitle = exampleModal.querySelector('.modal-title');
+            {#const modalBodyInput = exampleModal.querySelector('.modal-body input');#}
+
+            $('#exampleModal .modal-footer .btn-primary').on('click', () => {
+                window.location.href = `/container/${containerId}/delete/${containerItemId}`
+            })
+
+            modalTitle.textContent = `Are you sure you want to remove '${itemDescription}' from this container?`
+        })
+    </script>
+    <!-- End Modal -->
 {% endblock %}

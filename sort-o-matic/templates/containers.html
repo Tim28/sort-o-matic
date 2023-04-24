@@ -8,28 +8,28 @@
                 <button type="submit" class="btn btn-primary" name="action" value="add_container" id="button-addon1">Add</button>
             </div>
         </form>
-    </div>
 
+    </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
 
         {% for container in containers %}
             <div class="col-sm-6">
-                <div class="card">
+                <div class="card{% if container.color %} card-{{ container.color }}{% endif %}">
                     <a href="/container/{{ container.id }}" class="stretched-link"></a>
 
                     <div class="card-header"><h6>{{ container.description }}</h6></div>
                     <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
+{#                        <h5 class="card-title">Special title treatment</h5>#}
                         <p class="card-text">
                         <ul>
-                            <li>Last updated: 12/02/2023</li>
+{#                            <li>Last updated: 12/02/2023</li>#}
                             <li>Total items: {{ container.items | sum(attribute='quantity') }}</li>
                         </ul>
-                        </p>
                     </div>
                 </div>
             </div>
-
+        {% else %}
+            No container.
         {% endfor %}
 
     </div>

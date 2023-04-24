@@ -20,15 +20,13 @@ class ContainerItem(db.Model):
     def __init__(self, *args, **kwargs):
         id_ = db.session.query(func.max(ContainerItem.id)).first()[0] + 1
         super().__init__(id=id_, *args, **kwargs)
-    #     self.container_id = container_id
-    #     self.item_id = item_id
-    #     self.quantity = quantity
-    #     self.id = db.session.query(func.max(ContainerItem.id)).get() + 1
+
 
 class Container(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String, nullable=True)
     identifier = db.Column(db.String, nullable=True)
+    color = db.Column(db.String, nullable=True)
 
     items = db.relationship('ContainerItem', back_populates='container')
 
