@@ -1,0 +1,12 @@
+name: run-cicd
+run-name: "Running cicd at Mikkis place."
+on: [push]
+jobs:
+  running-cicd:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Webhook
+      uses: mweesenaar/webhook-action@master
+      with:
+        url: "https://cicd.home.mikki.io/start_deployment"
+        body: '{"event": "deployment", "repository": "${{ github.repository }}", "branch": "${{ github.ref_name }}"}'
